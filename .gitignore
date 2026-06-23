@@ -1,0 +1,21 @@
+# secrets
+.env
+.direnv
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+
+# packaging
+*.egg-info/
+build/
+dist/
+
+# macOS
+.DS_Store
+
+# editor
+.vscode/
+.idea/
