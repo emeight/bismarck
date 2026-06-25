@@ -1,4 +1,4 @@
-# bismarck/src/providers/base.py
+# bismarck/providers/base.py
 
 from __future__ import annotations
 

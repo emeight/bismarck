@@ -1,4 +1,4 @@
-# bismarck/src/providers/anthropic.py
+# bismarck/providers/anthropic.py
 
 from typing import Any
 
@@ -6,7 +6,7 @@ from anthropic import Anthropic, APIError
 from pydantic import TypeAdapter, ValidationError
 
 from bismarck.errors import ProviderError, ProviderRefusalError, SchemaValidationError
-from bismarck.providers.base import BaseProvider
+from bismarck.providers import BaseProvider
 from bismarck.schema import GenerationRequest, LLMResponse, ModelUsage
 
 _ENVELOPE_KEY = "result"

@@ -1,11 +1,11 @@
-# bismark/src/routing/provider_router.py
+# bismarck/routing/provider_router.py
 
 import threading
 from types import MappingProxyType
 from typing import Type
 
 from bismarck.errors import UnknownProviderError
-from bismarck.providers.base import BaseProvider
+from bismarck.providers import BaseProvider
 from bismarck.providers.openai import OpenAIProvider
 from bismarck.providers.anthropic import AnthropicProvider
 from bismarck.providers.google import GoogleProvider

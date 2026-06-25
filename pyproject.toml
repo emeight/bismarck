@@ -13,3 +13,9 @@ dependencies = [
     "pydantic",
     "pyyaml",
 ]
+
+[tool.setuptools.packages.find]
+include = ["bismarck*"]
+
+[tool.setuptools.package-data]
+"bismarck.data" = ["*.yaml"]

@@ -1,11 +1,14 @@
-# bismarck/src/schema.py
+# bismarck/schema.py
 
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Optional, Type, Literal
+from typing import Any, Optional, Type, Literal, get_args
 from pydantic import BaseModel
 
+
+ModelCapability = Literal["tools", "vision", "streaming", "structured_output"]
+MODEL_CAPABILITIES: frozenset[str] = frozenset(get_args(ModelCapability))
 
 @dataclass(frozen=True)
 class ModelPricing:
@@ -19,6 +22,7 @@ class ModelSpec:
     provider: str
     context_window: int
     pricing: ModelPricing
+    capabilities: frozenset[ModelCapability]
 
 
 @dataclass(frozen=True)

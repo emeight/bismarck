@@ -1,4 +1,4 @@
-# bismarck/src/providers/google.py
+# bismarck/providers/google.py
 
 from typing import Any
 
@@ -8,7 +8,7 @@ from google.genai.errors import APIError
 from pydantic import TypeAdapter, ValidationError
 
 from bismarck.errors import ProviderError, ProviderRefusalError, SchemaValidationError
-from bismarck.providers.base import BaseProvider
+from bismarck.providers import BaseProvider
 from bismarck.schema import GenerationRequest, LLMResponse, ModelUsage
 
 _ENVELOPE_KEY = "result"

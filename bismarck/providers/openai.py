@@ -1,4 +1,4 @@
-# bismarck/src/providers/openai.py
+# bismarck/providers/openai.py
 
 import json
 from openai import OpenAI, OpenAIError
@@ -7,7 +7,7 @@ from typing import Any
 
 from bismarck.errors import ProviderError, ProviderRefusalError, SchemaValidationError
 from bismarck.schema import GenerationRequest, LLMResponse, ModelUsage
-from bismarck.providers.base import BaseProvider
+from bismarck.providers import BaseProvider
 
 _ENVELOPE_KEY = "result"
 
