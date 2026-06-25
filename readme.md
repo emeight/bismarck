@@ -3,7 +3,7 @@
 ![Otto](assets/otto.jpg)
 > Otto von Bismarck unified the German states into a single empire in 1871. This package continues his legacy through the unification of major LLM providers into a single API.
 
-A single unified interface for working with multiple LLM providers. Developers can write their code once and swap models freely.
+A unified abstraction layer that makes multiple LLM providers feel like one.
 
 ## Motivation
 SDKs, request formats, and output structures vary across LLM providers. Switching between models usually means rewriting integration code. I wanted to remove that friction with one interface that supports switching between any major model.
@@ -32,8 +32,7 @@ response = llm.generate("Where was Teddy Roosevelt born?")
 
 ## Retries & Fallbacks
 
-Pass `fallbacks` to register backup models, in priority order, and opt
-into them per call with `retry=True`:
+Pass `fallbacks` to register backup models, in priority order (`retry=True` set by default):
 
 ```python
 from bismarck import LLM
@@ -58,6 +57,22 @@ The cooldown defaults to 30 seconds and is configurable:
 ```python
 llm = LLM(model="gpt-5", fallbacks=["claude-sonnet-4-6"],
           provider_cooldown_seconds=60)
+```
+
+## Structured Outputs
+
+Pass types to `schema` and access the formatted result through the response's `data` attribute:
+
+```python
+from bismarck import LLM
+
+llm = LLM(
+    model="gpt-5",
+    fallbacks=["claude-sonnet-4-6", "gemini-3-pro"],
+)
+
+response = llm.generate("What's the capital of France?", schema=str)
+response.data # returns 'Paris'
 ```
 
 ## Supported Providers

@@ -57,7 +57,7 @@ class LLM:
             system: str | None = None,
             max_tokens: int | None = None,
             schema=None,
-            retry: bool = False,
+            retry: bool = True,
         ) -> LLMResponse:
         messages = (Message(role="user", content=user),)
         candidates = [self.spec] + (self.fallbacks if retry else [])
