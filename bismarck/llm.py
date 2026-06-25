@@ -10,6 +10,7 @@ from bismarck.routing import ModelRegistry, ProviderRouter
 
 class LLM:
     DEFAULT_PROVIDER_COOLDOWN_SECONDS: float = 30.
+    DEFAULT_MAX_TOKENS: int = 4096
 
     def __init__(
             self,
@@ -54,11 +55,13 @@ class LLM:
             self,
             user: str,
             system: str | None = None,
+            max_tokens: int | None = None,
             schema=None,
             retry: bool = False,
         ) -> LLMResponse:
         messages = (Message(role="user", content=user),)
         candidates = [self.spec] + (self.fallbacks if retry else [])
+        resolved_max_tokens = max_tokens if max_tokens is not None else self.DEFAULT_MAX_TOKENS
 
         last_error: Exception | None = None
         attempted = False
@@ -74,6 +77,7 @@ class LLM:
                     messages=messages,
                     system=system,
                     model=candidate.name,
+                    max_tokens=resolved_max_tokens,
                     schema=schema,
                 )
             except ProviderError as e:

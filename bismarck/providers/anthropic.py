@@ -74,7 +74,7 @@ class AnthropicProvider(BaseProvider):
 
     def _generate(self, request: GenerationRequest) -> LLMResponse:
         if request.max_tokens is None:
-            # Unlike OpenAI, Anthropic's API has no default and requires this explicitly.
+            # anthropic's API has no default and requires this explicitly
             raise ValueError(f"{self.name}: max_tokens is required")
 
         kwargs = dict(

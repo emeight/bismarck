@@ -281,6 +281,22 @@ class TestGenerateHappyPath:
         LLM("primary").generate("hello")
         assert provider.calls[0]["model"] == "primary"
 
+    def test_default_max_tokens_flows_through_when_unset(self):
+            register_model("primary", provider="provider-a")
+            provider = ScriptedProvider("provider-a").queue(make_response())
+            register_provider("provider-a", provider)
+
+            LLM("primary").generate("hello")
+            assert provider.calls[0]["max_tokens"] == LLM.DEFAULT_MAX_TOKENS
+
+    def test_explicit_max_tokens_overrides_default(self):
+        register_model("primary", provider="provider-a")
+        provider = ScriptedProvider("provider-a").queue(make_response())
+        register_provider("provider-a", provider)
+
+        LLM("primary").generate("hello", max_tokens=256)
+        assert provider.calls[0]["max_tokens"] == 256
+
 
 # ---------------------------------------------------------------------------
 # generate() — retry / fallback traversal
@@ -464,6 +480,24 @@ class TestGenerateErrorRaising:
 
         result = llm.generate("hello", retry=True)
         assert result.model == "fb1"
+
+    def test_invalid_max_tokens_propagates_uncaught(self):
+        # Validation of max_tokens lives in GenerationRequest.__post_init__,
+        # which raises a plain ValueError
+        register_model("primary", provider="provider-a")
+        register_model("fb1", provider="provider-b")
+
+        register_provider(
+            "provider-a", ScriptedProvider("provider-a").queue(ValueError("max_tokens must be positive"))
+        )
+        provider_b = ScriptedProvider("provider-b").queue(make_response())
+        register_provider("provider-b", provider_b)
+
+        llm = LLM("primary", fallbacks=["fb1"])
+        with pytest.raises(ValueError, match="max_tokens"):
+            llm.generate("hello", retry=True, max_tokens=0)
+
+        assert provider_b.calls == []  # never attempted
 
 
 # ---------------------------------------------------------------------------

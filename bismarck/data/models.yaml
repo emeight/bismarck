@@ -23,7 +23,7 @@ models:
       streaming: true
       structured_output: true
 
-  claude-sonnet-4:
+  claude-sonnet-4-6:
     provider: anthropic
     context_window: 200000
     pricing:
