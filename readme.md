@@ -51,8 +51,7 @@ Generation failures are bifurcate:
 - **Provider errors** (outages, auth failures, rate limits) take the
   *entire provider* out of rotation for a cooldown window.
 - **Model errors** (a single model's refusal, a schema mismatch) 
-  rule out that specific model and retru with the next fallback
-  immediately (no cooldown).
+  rule out that specific model and retry with the next fallback model.
 
 The cooldown defaults to 30 seconds and is configurable:
 
