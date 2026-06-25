@@ -9,9 +9,9 @@ A single unified interface for working with multiple LLM providers. Developers c
 SDKs, request formats, and output structures vary across LLM providers. Switching between models usually means rewriting integration code. I wanted to remove that friction with one interface that supports switching between any major model.
 
 ## Features
-* **Provider Agnostic** OpenAI, Anthropic, Google, and others behind a single class.
-* **Automatic Fallbacks** Register backup models so that your requests are unaffected by provider outages.
-* **Structured Outputs** Consistent typed response regardless of provider.
+* **Provider Agnostic** Most major model providers behind a single class.
+* **Automatic Fallbacks** Register backup models so that requests are unaffected by provider outages.
+* **Structured Outputs** Consistent typed responses regardless of provider.
 * **Model Swapping** Change a single parameter to use a different model.
 * **Usage Transparency** Clear usage metrics.
 
@@ -19,11 +19,6 @@ SDKs, request formats, and output structures vary across LLM providers. Switchin
 
 ```bash
 pip install git+https://github.com/emeight/bismarck.git
-```
-
-Pin to a release instead of tracking `main`:
-```bash
-pip install git+https://github.com/emeight/bismarck.git@v0.1.0
 ```
 
 ## Example
@@ -51,15 +46,13 @@ llm = LLM(
 response = llm.generate("Where was Teddy Roosevelt born?", retry=True)
 ```
 
-Bismarck distinguishes two kinds of failure:
+Generation failures are bifurcate:
 
 - **Provider errors** (outages, auth failures, rate limits) take the
-  *entire provider* out of rotation for a cooldown window — any other
-  fallback model on that same provider is skipped too, not just the one
-  that failed.
-- **Model errors** (a single model's refusal, a schema mismatch) only
-  rule out that specific model — Bismarck moves to the next fallback
-  immediately, no cooldown applied.
+  *entire provider* out of rotation for a cooldown window.
+- **Model errors** (a single model's refusal, a schema mismatch) 
+  rule out that specific model and retru with the next fallback
+  immediately (no cooldown).
 
 The cooldown defaults to 30 seconds and is configurable:
 
